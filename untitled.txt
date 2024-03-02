@@ -1,0 +1,74 @@
+import struct
+
+def add_record():
+    s_id = int(input("Enter Shoe ID: "))
+    name = input("Enter Name: ")
+    brand = input("Enter Brand: ")
+    shoe_type = input("Enter Type: ")
+    price = float(input("Enter Price: "))
+
+    with open("shoes.dat", "ab") as file:
+        record = struct.pack("I20s20s20sf", s_id, name.encode(), brand.encode(), shoe_type.encode(), price)
+        file.write(record)
+    print("Record added successfully.")
+
+def display_records():
+    try:
+        with open("shoes.dat", "rb") as file:
+            record_size = struct.calcsize("I20s20s20sf")
+            while True:
+                data = file.read(record_size)
+                if not data:
+                    break
+                record = struct.unpack("I20s20s20sf", data)
+                print("Shoe ID:", record[0])
+                print("Name:", record[1].decode().rstrip('\x00'))
+                print("Brand:", record[2].decode().rstrip('\x00'))
+                print("Type:", record[3].decode().rstrip('\x00'))
+                print("Price:", record[4])
+                print("----------------------")
+    except FileNotFoundError:
+        print("File not found. No records to display.")
+
+def search_record():
+    s_id = int(input("Enter Shoe ID to search: "))
+    try:
+        with open("shoes.dat", "rb") as file:
+            record_size = struct.calcsize("I20s20s20sf")
+            while True:
+                data = file.read(record_size)
+                if not data:
+                    break
+                record = struct.unpack("I20s20s20sf", data)
+                if record[0] == s_id:
+                    print("Record found:")
+                    print("Shoe ID:", record[0])
+                    print("Name:", record[1].decode().rstrip('\x00'))
+                    print("Brand:", record[2].decode().rstrip('\x00'))
+                    print("Type:", record[3].decode().rstrip('\x00'))
+                    print("Price:", record[4])
+                    return
+        print("Record not found.")
+    except FileNotFoundError:
+        print("File not found.")
+
+while True:
+    print("\nMenu:")
+    print("1. Add Record")
+    print("2. Display Records")
+    print("3. Search Record")
+    print("4. Exit")
+
+    choice = input("Enter your choice (1-4): ")
+
+    if choice == '1':
+        add_record()
+    elif choice == '2':
+        display_records()
+    elif choice == '3':
+        search_record()
+    elif choice == '4':
+        print("Exiting the program. Goodbye!")
+        break
+    else:
+        print("Invalid choice. Please enter a number between 1 and 4.")
