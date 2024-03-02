@@ -1,0 +1,2 @@
+# Real-time-Sentiment-Analysis-on-Social-Media-Data-using-Big-Data-and-Cloud-Computing.-
+In this project, we aim to develop a robust system for monitoring and analyzing sentiments expressed on social media platforms in real-time. Leveraging cutting-edge technologies in big data processing and cloud computing, our solution provides valuable insights into public opinions and emotions on various topics.
